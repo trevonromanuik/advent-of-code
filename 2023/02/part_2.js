@@ -1,0 +1,31 @@
+const fs = require('fs');
+const path = require('path');
+
+const test = false;
+const debug = true;
+const input_file = test ? './test_input.txt' : './input.txt';
+const input = fs.readFileSync(path.resolve(__dirname, input_file), 'utf-8');
+
+const sum = input.split('\n').reduce((sum, line, i) => {
+  if (!line) return sum;
+  const game = line.split('; ');
+  const min_cubes = { red: 0, green: 0, blue: 0 };
+  for (let j = 0; j < game.length; j++) {
+    const round = (j === 0) ?
+        game[j].substring(7 + (i + 1).toString().length) :
+        game[j];
+    const cubes = round.split(', ');
+    for(let k = 0; k < cubes.length; k++) {
+      const [n, c] = cubes[k].split(' ');
+      if (parseInt(n) > min_cubes[c]) {
+        min_cubes[c] = parseInt(n);
+      }
+    }
+  }
+  const power = Object.values(min_cubes).reduce((p, n) => {
+    return p * n;
+  }, 1);
+  if (debug) console.log(`Game ${i + 1}: ${power}`);
+  return sum + power;
+}, 0);
+console.log(sum);
