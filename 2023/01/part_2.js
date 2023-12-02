@@ -6,34 +6,29 @@ const debug = true;
 const input_file = test ? './test_input.txt' : './input.txt';
 const input = fs.readFileSync(path.resolve(__dirname, input_file), 'utf-8');
 
-const num_map = {
-  '0': 0,
-  '1': 1,
-  '2': 2,
-  '3': 3,
-  '4': 4,
-  '5': 5,
-  '6': 6,
-  '7': 7,
-  '8': 8,
-  '9': 9,
-  'one': 1,
-  'two': 2,
-  'three': 3,
-  'four': 4,
-  'five': 5,
-  'six': 6,
-  'seven': 7,
-  'eight': 8,
-  'nine': 9,
-};
+const num_map = [
+  'zero',
+  'one',
+  'two',
+  'three',
+  'four',
+  'five',
+  'six',
+  'seven',
+  'eight',
+  'nine',
+].reduce((acc, s, i) => {
+  acc[s] = i;
+  acc[i] = i;
+  return acc;
+}, {});
 const num_keys = Object.keys(num_map);
 
 function isNum(line, i) {
   for (let j = 0; j < num_keys.length; j++) {
     const key = num_keys[j];
+    if (i + key.length > line.length) continue;
     for (let k = 0; k < key.length; k++) {
-      if (i + k >= line.length) break;
       if (line[i + k] !== key[k]) break;
       if (k === key.length - 1) return key;
     }
