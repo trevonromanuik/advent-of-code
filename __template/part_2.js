@@ -5,3 +5,7 @@ const test = true;
 const debug = true;
 const input_file = test ? './test_input.txt' : './input.txt';
 const input = fs.readFileSync(path.resolve(__dirname, input_file), 'utf-8');
+
+const start = Date.now();
+
+console.log(`${Date.now() - start}ms`);
