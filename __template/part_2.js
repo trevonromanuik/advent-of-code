@@ -6,6 +6,11 @@ const debug = true;
 const input_file = test ? './test_input.txt' : './input.txt';
 const input = fs.readFileSync(path.resolve(__dirname, input_file), 'utf-8');
 
-const start = Date.now();
+function hrTime() {
+    const t = process.hrtime();
+    return Math.floor(t[0] * 1000000 + t[1] / 1000);
+}
 
-console.log(`${Date.now() - start}ms`);
+const start = hrTime();
+
+console.log(`${hrTime() - start}ms`);
