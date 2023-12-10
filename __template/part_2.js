@@ -13,4 +13,4 @@ function hrTime() {
 
 const start = hrTime();
 
-console.log(`${hrTime() - start}ms`);
+console.log(`${hrTime() - start}µs`);
