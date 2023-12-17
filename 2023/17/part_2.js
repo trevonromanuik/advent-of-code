@@ -72,7 +72,15 @@ function moveAndAdd(y, x, d, s, k, n) {
     if (r && i === n) {
         const node = toNode(r.y, r.x, d, s + n);
         if (!costs[node.k]) {
-            q.push(node);
+            const node_cost = c + (n_rows - node.y) + (n_cols - node.x);
+            const index = q.findIndex((n) => {
+                return node_cost < (costs[n.k] + (n_rows - n.y) + (n_cols - n.x));
+            });
+            if (index === -1) {
+                q.push(node);
+            } else {
+                q.splice(index, 0, node);
+            }
         }
         if (c < (costs[node.k] || Infinity)) {
             prevs[node.k] = k;
@@ -82,12 +90,7 @@ function moveAndAdd(y, x, d, s, k, n) {
 }
 
 while (q.length) {
-    q.sort(({ y: y1, x: x1, s: s1, k: k1 }, { y: y2, x: x2, s: s2, k: k2 }) => {
-        const d1 = (n_rows - y1) + (n_cols - x1) + costs[k1];
-        const d2 = (n_rows - y2) + (n_cols - x2) + costs[k2];
-        return d1 < d2 ? 1 : -1;
-    });
-    const { y, x, d, s, k } = q.pop();
+    const { y, x, d, s, k } = q.shift();
     if (y === n_rows - 1 && x === n_cols - 1 && s >= 4) {
         console.log(costs[k]);
         if (debug) {
