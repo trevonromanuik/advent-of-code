@@ -128,3 +128,7 @@ dist
 
 # Webstorm
 .idea/
+
+# test inputs
+*input.txt
+!__template/*input.txt
