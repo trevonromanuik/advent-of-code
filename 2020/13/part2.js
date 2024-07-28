@@ -1,52 +1,28 @@
 const fs = require('fs');
 const path = require('path');
 
-const test = true;
+const test = false;
 const debug = false;
 const input_file = test ? './test_input.txt' : './input.txt';
 const input = fs.readFileSync(path.resolve(__dirname, input_file), 'utf-8');
 
-const lines = input.split('\r\n');
-const buses = lines[1].split(',').map((n, b) => {
+const lines = input.split('\n');
+const buses = lines[1].split(',').map((n, i) => {
   n = parseInt(n);
-  return { n, b };
+  return { n, i };
 }).filter(({ n }) => {
   return !isNaN(n);
 });
 
-const N = buses.reduce((p, { n }) => {
-  return p * n;
-}, 1);
+const gcd = (a, b) => b === 0 ? a : gcd (b, a % b);
+const lcm = (a, b) =>  a / gcd (a, b) * b;
 
-const x = buses.reduce((sum, bus) => {
-  const { n, b } = bus;
-  const Ni = N / n;
-  let xi = 1;
-  while(true) {
-    if((Ni * xi) % n === 1) break;
-    xi++;
-  }
-  return sum + (b * Ni * xi);
-}, 0);
-
-let t = x;
-while(true) {
-  console.log(t);
-  if(buses.every(({ n, i }) => {
-    return t % n === i;
-  })) {
-    console.log(t);
-    break;
-  }
-  t += N;
+let t = buses[0].n;
+let p = buses[0].n;
+for(let { n, i } of buses) {
+  while((t + i) % n !== 0) t += p;
+  p = lcm(p, n);
+  console.log({ p });
 }
-
-/**
- * 
- * 67,7,x,59,61
- * t = 0 (mod 67)
- * t = 1 (mod 7)
- * t = 3 (mod 59)
- * t = 4 (mod 61)
- * 
- */
+console.log('-----');
+console.log(t);
