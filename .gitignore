@@ -132,3 +132,5 @@ dist
 # test inputs
 *input.txt
 !__template/*input.txt
+
+.DS_Store
