@@ -28,4 +28,4 @@ function hrTime() {
 
 const start = hrTime();
 
-console.log(summary(start));
+console.log(JSON.stringify(summary(start)));
